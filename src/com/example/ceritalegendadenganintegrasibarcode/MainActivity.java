@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
+	public static long contents;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,9 +23,9 @@ public class MainActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 	    if (requestCode == 0) {
 	        if (resultCode == RESULT_OK) {
-	            String contents = intent.getStringExtra("SCAN_RESULT");
+	            contents = Long.parseLong(intent.getStringExtra("SCAN_RESULT"));
 	            //String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-	            Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
+	            Toast.makeText(this, String.valueOf(contents), Toast.LENGTH_SHORT).show();
 	            Intent intent2 = new Intent(this, Cerita.class);
 	            startActivity(intent2);
 	            // Handle successful scan
