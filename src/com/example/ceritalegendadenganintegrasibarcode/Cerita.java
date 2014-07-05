@@ -3,13 +3,14 @@ package com.example.ceritalegendadenganintegrasibarcode;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Cerita extends Activity{
 	
-
+	private static MediaPlayer mp;
 	TextView judul_tv, cerita_tv;
 	ImageView gambar;
 
@@ -28,7 +29,6 @@ public class Cerita extends Activity{
 		
 		dbHelper = (new Database(this));
 		db = dbHelper.getReadableDatabase();
-		dbHelper.onCreate(db);
 
 		cursor = db.query(Database.TABLE_CERITA, Database.ALL_COLUMN, null, null, null, null, null);
 		cursor.moveToLast();
@@ -41,9 +41,10 @@ public class Cerita extends Activity{
 			if(MainActivity.contents == sbarcode){
 				System.out.println(sbarcode);
 				judul_tv.setText(cursor.getString(1));
-				cerita_tv.setText(cursor.getString(2));
-				
-				gambar.setImageResource(2130837506);
+				cerita_tv.setText(cursor.getString(2));				
+				gambar.setImageResource(Integer.parseInt(cursor.getString(4)));
+				mp = MediaPlayer.create(getApplicationContext(), Integer.parseInt(cursor.getString(5)));
+				mp.start();
 			}else{
 				cursor.moveToNext();
 			}
@@ -52,5 +53,10 @@ public class Cerita extends Activity{
 		
 		
 	}
-	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		mp.stop();
+		super.onDestroy();
+	}
 }
