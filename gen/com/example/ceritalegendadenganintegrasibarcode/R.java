@@ -49,6 +49,16 @@ public final class R {
     }
     public static final class raw {
         public static final int door_bell_test=0x7f040000;
+        public static final int s_aryo_menak=0x7f040001;
+        public static final int s_banyuwangi=0x7f040002;
+        public static final int s_batu_menangis=0x7f040003;
+        public static final int s_candi_prambanan=0x7f040004;
+        public static final int s_danau_toba=0x7f040005;
+        public static final int s_keong_mas=0x7f040006;
+        public static final int s_lutung_kasarung=0x7f040007;
+        public static final int s_malin_kundang=0x7f040008;
+        public static final int s_sangkuriang=0x7f040009;
+        public static final int s_timun_mas=0x7f04000a;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;

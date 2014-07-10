@@ -7,10 +7,11 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Cerita extends Activity{
 	
-	private static MediaPlayer mp;
+	
 	TextView judul_tv, cerita_tv;
 	ImageView gambar;
 
@@ -18,6 +19,7 @@ public class Cerita extends Activity{
 	private SQLiteDatabase db;
 	private Database dbHelper;
 	private Cursor cursor;
+	private MediaPlayer mp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,33 +32,22 @@ public class Cerita extends Activity{
 		dbHelper = (new Database(this));
 		db = dbHelper.getReadableDatabase();
 
-		cursor = db.query(Database.TABLE_CERITA, Database.ALL_COLUMN, null, null, null, null, null);
-		cursor.moveToLast();
-		int jmlhbrs = cursor.getCount();
+		cursor = db.rawQuery("SELECT * FROM "+Database.TABLE_CERITA+" WHERE "+Database.COLUMN_BARCODE+" = '"+MainActivity.contents+"'", null);
 		cursor.moveToFirst();
-		for(int i=0;i<jmlhbrs;i++){
-			sbarcode = cursor.getLong(3);
-			System.out.println("barcode"+sbarcode);
-
-			if(MainActivity.contents == sbarcode){
 				System.out.println(sbarcode);
 				judul_tv.setText(cursor.getString(1));
 				cerita_tv.setText(cursor.getString(2));				
 				gambar.setImageResource(Integer.parseInt(cursor.getString(4)));
-				mp = MediaPlayer.create(getApplicationContext(), Integer.parseInt(cursor.getString(5)));
-				mp.start();
-			}else{
-				cursor.moveToNext();
-			}
-		}
-		System.out.println("ada"+MainActivity.contents);
-		
-		
+				mp = MediaPlayer.create(this, Integer.parseInt(cursor.getString(5)));
+				mp.start();		
 	}
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		mp.stop();
+		if (mp.isPlaying()) {
+			mp.stop();
+			mp.release();			
+		}
 		super.onDestroy();
 	}
 }
